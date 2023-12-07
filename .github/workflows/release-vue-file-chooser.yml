@@ -1,0 +1,31 @@
+name: Publish to NPM
+
+on:
+  pull_request:
+    branches:
+      - 'release-vue-file-chooser'
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Build & Publish
+        run: |
+          cd packages/vue
+          yarn build
+          yarn publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
