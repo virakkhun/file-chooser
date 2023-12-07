@@ -1,22 +1,22 @@
 import commonjs from '@rollup/plugin-commonjs'
 import resolve from '@rollup/plugin-node-resolve'
 import terser from '@rollup/plugin-terser'
-import { RollupOptions } from 'rollup'
 import dts from 'rollup-plugin-dts'
 import esbuild from 'rollup-plugin-esbuild'
 
-type Pkg = 'react' | 'vue'
-type PkgConfig = {
-  entry: string
-  output: string
-  type: 'js' | 'dts'
-  external?: string[]
-}
+/**
+ * @param {'vue' | 'react'} pkg
+ */
+const entry = (pkg) => `./packages/${pkg}/index.ts`
+/**
+ * @param {'vue' | 'react'} pkg
+ */
+const output = (pkg) => `./packages/${pkg}/dist`
 
-const entry = (pkg: Pkg) => `./packages/${pkg}/index.ts`
-const output = (pkg: Pkg) => `./packages/${pkg}/dist`
-
-const pkgConfigs: PkgConfig[] = [
+/**
+ * @type {{entry: string, output: string, type: 'js' | 'dts', external?: string[]}[]}
+ */
+const pkgConfigs = [
   {
     entry: entry('vue'),
     output: output('vue'),
@@ -41,7 +41,10 @@ const pkgConfigs: PkgConfig[] = [
   // }
 ]
 
-const configs: RollupOptions[] = []
+/**
+ * @type {import('rollup').RollupOptions[]}
+ */
+const configs = []
 
 pkgConfigs.forEach(({ entry, output, type, external }) => {
   if (type === 'dts')

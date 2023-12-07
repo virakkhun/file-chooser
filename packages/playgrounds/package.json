@@ -1,0 +1,12 @@
+{
+  "name": "playgrounds",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "dependencies": {
+    "vue-file-chooser": "0.0.1"
+  },
+  "scripts": {
+    "start": "vite"
+  }
+}
