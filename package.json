@@ -2,13 +2,15 @@
   "name": "monorepo",
   "private": true,
   "version": "0.0.1",
+  "type": "module",
   "author": {
     "name": "Virak Khun",
     "email": "virak.dev.2000@gmail.com"
   },
   "license": "MIT",
   "scripts": {
-    "build": "rollup -c rollup.config.mjs"
+    "build": "rollup -c rollup.config.mjs",
+    "start:play": "yarn --cwd packages/playgrounds start"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -22,7 +24,9 @@
     "rollup-plugin-dts": "6.1.0",
     "rollup-plugin-esbuild": "6.1.0",
     "esbuild": "0.19.8",
-    "typescript": "^4"
+    "typescript": "^4",
+    "@vitejs/plugin-vue": "^4.5.2",
+    "vite": "5.0.6"
   },
   "workspaces": [
     "packages/**"
