@@ -6,5 +6,10 @@
     "email": "virak.dev.2000@gmail.com",
     "url": "https://virak.vercel.app"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "types": "dist/index.d.ts",
+  "typings": "dist/index.d.ts",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "type": "module"
 }

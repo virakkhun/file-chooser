@@ -7,6 +7,9 @@
     "email": "virak.dev.2000@gmail.com"
   },
   "license": "MIT",
+  "scripts": {
+    "build": "rollup -c rollup.config.mjs"
+  },
   "dependencies": {
     "react": "^18.2.0",
     "vue": "^3.3.10"
@@ -17,6 +20,8 @@
     "@rollup/plugin-node-resolve": "15.2.3",
     "@rollup/plugin-terser": "0.4.4",
     "rollup-plugin-dts": "6.1.0",
-    "rollup-plugin-esbuild": "6.1.0"
+    "rollup-plugin-esbuild": "6.1.0",
+    "esbuild": "0.19.8",
+    "typescript": "^4"
   }
 }
