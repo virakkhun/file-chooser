@@ -20,13 +20,12 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install Dependencies
-        run: yarn
+        run: npm install
 
       - name: Build & Publish
         run: |
-          yarn build
-
+          npm run build
           cd packages/vue
-          yarn publish
+          npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
