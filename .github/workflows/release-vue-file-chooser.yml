@@ -24,8 +24,9 @@ jobs:
 
       - name: Build & Publish
         run: |
-          cd packages/vue
           yarn build
+
+          cd packages/vue
           yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
