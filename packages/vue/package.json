@@ -16,5 +16,11 @@
   "files": [
     "dist",
     "package.json"
-  ]
+  ],
+  "repository": {
+    "url": "https://github.com/virakkhun/file-chooser"
+  },
+  "bugs": {
+    "url": "https://github.com/virakkhun/file-chooser/issues"
+  }
 }
