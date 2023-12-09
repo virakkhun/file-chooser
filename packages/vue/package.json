@@ -1,6 +1,7 @@
 {
   "name": "vue-file-chooser",
   "version": "0.0.1",
+  "private": false,
   "author": {
     "name": "Virak Khun",
     "email": "virak.dev.2000@gmail.com",
@@ -15,5 +16,11 @@
   "files": [
     "dist",
     "package.json"
-  ]
+  ],
+  "repository": {
+    "url": "git+https://github.com/virakkhun/file-chooser"
+  },
+  "bugs": {
+    "url": "git+https://github.com/virakkhun/file-chooser/issues"
+  }
 }
