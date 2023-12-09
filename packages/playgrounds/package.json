@@ -4,9 +4,16 @@
   "version": "0.0.1",
   "type": "module",
   "dependencies": {
+    "@heroicons/vue": "^2.0.18",
     "vue-file-chooser": "0.0.1"
   },
   "scripts": {
-    "start": "vite"
+    "start": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.3.6"
   }
 }
