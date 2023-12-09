@@ -10,7 +10,8 @@
   "license": "MIT",
   "scripts": {
     "build": "rollup -c rollup.config.mjs",
-    "start:play": "yarn --cwd packages/playgrounds start"
+    "start:play": "yarn --cwd packages/playgrounds start",
+    "build:play": "yarn --cwd packages/playgrounds build"
   },
   "dependencies": {
     "react": "^18.2.0",
