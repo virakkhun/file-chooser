@@ -1,53 +1,28 @@
 <script setup lang="ts">
-import { FileChooser } from 'vue-file-chooser'
-const fileChooserBuilder = new FileChooser()
-
-const onCancelImageClick = (e: Event) => {
-  e.preventDefault()
-  e.stopImmediatePropagation()
-  fileChooserBuilder.destroy()
-}
-
-defineExpose({
-  file: fileChooserBuilder.file,
-  imageDataUrl: fileChooserBuilder.imageDataUrl
-})
+import FileChooserComponent from './components/FileChooserComponent.vue'
 </script>
 
 <template>
-  <label
-    @dragover="(event) => event.preventDefault()"
-    @dragleave="(event) => fileChooserBuilder.onDrag(event, false)"
-    @dragenter="(event) => fileChooserBuilder.onDrag(event, true)"
-    @drop="(event) => fileChooserBuilder.onChange(event, true)"
-    for="file-upload"
-  >
-    <input
-      @change="(event) => fileChooserBuilder.onChange(event, false)"
-      type="file"
-      name="file-upload"
-      id="file-upload"
-      class="hidden"
-    />
-
-    <template v-if="!fileChooserBuilder.imageDataUrl.value">
-      <span class="text-blue-500 text-sm"
-        >Browse <span class="text-black/50">or</span> Drag & Drop</span
+  <main class="w-full h-screen flex flex-col items-center py-4">
+    <header>
+      <h1 class="text-2xl font-bold text-center">Vue Demo</h1>
+    </header>
+    <section class="flex justify-center items-center h-full w-full">
+      <FileChooserComponent />
+    </section>
+    <footer class="flex items-center gap-2">
+      <a
+        href="https://github.com/virakkhun/file-chooser/tree/main/packages/playgrounds"
+        class="hover:text-blue-500 duration-200"
+        target="_blank"
+        >github
+      </a>
+      <a
+        href="https://www.npmjs.com/package/vue-file-chooser"
+        class="hover:text-blue-500 duration-200"
+        target="_blank"
+        >npm</a
       >
-    </template>
-    <template v-else>
-      <div class="w-32 h-32 rounded-full overflow-hidden"></div>
-      <img
-        :src="fileChooserBuilder.imageDataUrl.value"
-        class="w-32 h-32 rounded-full object-cover object-center"
-      />
-    </template>
-
-    <span
-      v-if="!!fileChooserBuilder.imageDataUrl.value"
-      class="absolute top-2 right-2"
-    >
-      <button intent="transparent" @click="onCancelImageClick">click</button>
-    </span>
-  </label>
+    </footer>
+  </main>
 </template>
