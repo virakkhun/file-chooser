@@ -18,9 +18,9 @@
     "package.json"
   ],
   "repository": {
-    "url": "https://github.com/virakkhun/file-chooser"
+    "url": "git+https://github.com/virakkhun/file-chooser"
   },
   "bugs": {
-    "url": "https://github.com/virakkhun/file-chooser/issues"
+    "url": "git+https://github.com/virakkhun/file-chooser/issues"
   }
 }
