@@ -1,6 +1,6 @@
 {
-  "name": "vue-file-chooser",
-  "version": "0.0.2",
+  "name": "react-file-chooser",
+  "version": "0.0.1",
   "private": false,
   "author": {
     "name": "Virak Khun",
@@ -15,7 +15,8 @@
   "type": "module",
   "files": [
     "dist",
-    "package.json"
+    "package.json",
+    "README.md"
   ],
   "repository": {
     "url": "git+https://github.com/virakkhun/file-chooser"
@@ -24,7 +25,7 @@
     "url": "git+https://github.com/virakkhun/file-chooser/issues"
   },
   "keywords": [
-    "vue",
+    "react",
     "file-selector",
     "file-chooser",
     "helper",
