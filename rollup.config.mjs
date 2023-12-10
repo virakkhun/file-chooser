@@ -27,18 +27,18 @@ const pkgConfigs = [
     entry: entry('vue'),
     output: output('vue'),
     type: 'dts'
+  },
+  {
+    entry: entry('react'),
+    output: output('react'),
+    type: 'js',
+    external: ['react']
+  },
+  {
+    entry: entry('react'),
+    output: output('react'),
+    type: 'dts'
   }
-  // {
-  //   entry: entry('react'),
-  //   output: output('react'),
-  //   type: 'js',
-  //   external: ['react', 'react-dom']
-  // },
-  // {
-  //   entry: entry('react'),
-  //   output: output('react'),
-  //   type: 'dts'
-  // }
 ]
 
 /**
