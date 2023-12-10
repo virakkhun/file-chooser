@@ -5,8 +5,7 @@
   "type": "module",
   "dependencies": {
     "@heroicons/vue": "^2.0.18",
-    "vue-file-chooser": "0.0.2",
-    "react-file-chooser": "0.0.1"
+    "vue-file-chooser": "^0.0.1"
   },
   "scripts": {
     "start": "vite",
