@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { ChangeEvent, MouseEvent, useState } from 'react'
 import {
   ERROR_EXT_NOT_SUPPORTED,
   ERROR_MAX_FILE_SIZE,
@@ -24,7 +24,7 @@ export const useFileChooser = (exts?: EXTS[], maxSize?: number) => {
   const _extensions: EXTS[] = exts ? exts : [EXTS.JPG, EXTS.JPEG, EXTS.PNG]
   const _maxSize = maxSize ? maxSize : MaxFileSize['1MB']
 
-  function _setFile(file: File) {
+  async function _setFile(file: File) {
     const { ext, size } = _getFileExtAndSize(file)
 
     if (!ext || !_extensions.includes(ext)) {
@@ -39,22 +39,24 @@ export const useFileChooser = (exts?: EXTS[], maxSize?: number) => {
       return
     }
 
-    setFile(() => file)
-    _fileToDataUrl()
+    return Promise.resolve(file)
   }
 
-  function _readFileFromEvent(e: Event | DragEvent, isDragEvent: boolean) {
+  function _readFileFromEvent(
+    e: ChangeEvent<HTMLInputElement> | React.DragEvent,
+    isDragEvent: boolean
+  ) {
     const files = isDragEvent
-      ? (<DragEvent>e).dataTransfer?.files
+      ? (<React.DragEvent>e).dataTransfer?.files
       : (<HTMLInputElement>e.target)?.files
 
     return files?.item(0)
   }
 
-  function _fileToDataUrl() {
+  function _fileToDataUrl(file: File) {
     _revokeObjectUrl()
 
-    const blob = URL.createObjectURL(file!)
+    const blob = URL.createObjectURL(file)
     const fileReader = new FileReader()
 
     fileReader.addEventListener('load', () => {
@@ -85,14 +87,20 @@ export const useFileChooser = (exts?: EXTS[], maxSize?: number) => {
    * @param isDragEvent boolean
    * @returns void
    */
-  function onChange(e: Event | DragEvent, isDragEvent: boolean) {
+  function onChange(
+    e: ChangeEvent<HTMLInputElement> | React.DragEvent,
+    isDragEvent: boolean
+  ) {
     e.preventDefault()
+    setError(() => '')
     const file = _readFileFromEvent(e, isDragEvent)
     if (!file) {
       setError(() => ERROR_NOT_CHOOSE_FILE)
       return
     }
-    _setFile(file)
+    _setFile(file).then((f) => {
+      if (f) _fileToDataUrl(f)
+    })
   }
 
   /**
@@ -100,13 +108,31 @@ export const useFileChooser = (exts?: EXTS[], maxSize?: number) => {
    * @param e DragEvent
    * @param dragging boolean
    */
-  function onDrag(e: DragEvent, dragging: boolean) {
+  function onDrag(e: React.DragEvent, dragging: boolean) {
     e.preventDefault()
     setIsDragging(() => dragging)
   }
 
-  return [
-    { isDragging, error, file, imageDataUrl },
-    { onChange, onDrag }
-  ]
+  /**
+   * a function to reset state
+   */
+  function destroy(e: MouseEvent) {
+    e.preventDefault()
+    e.stopPropagation()
+    _revokeObjectUrl()
+    setFile(() => null)
+    setIsDragging((isDragging) => !isDragging)
+    setError(() => '')
+    setImageDataUrl(() => '')
+  }
+
+  return {
+    isDragging,
+    error,
+    file,
+    imageDataUrl,
+    onChange,
+    onDrag,
+    destroy
+  }
 }
