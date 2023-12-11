@@ -3,10 +3,10 @@ import {
   ERROR_EXT_NOT_SUPPORTED,
   ERROR_MAX_FILE_SIZE,
   ERROR_NOT_CHOOSE_FILE
-} from './constants/errors'
-import { IFileChooser } from './models/file-chooser'
-import { MaxFileSize } from './models/file-size'
-import { EXTS } from './models/supported-ext'
+} from '../../common/constants/errors'
+import { IFileChooser } from '../../common/models/file-chooser'
+import { MaxFileSize } from '../../common/models/file-size'
+import { EXTS } from '../../common/models/supported-ext'
 
 /**
  * @class FileChooser

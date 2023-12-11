@@ -23,3 +23,25 @@ with pnpm:
 ```code
 pnpm add vue-file-chooser
 ```
+
+### React
+
+#### Install
+
+with npm:
+
+```code
+npm install react-file-chooser
+```
+
+with yarn:
+
+```code
+yarn add react-file-chooser
+```
+
+with pnpm:
+
+```code
+pnpm add react-file-chooser
+```
