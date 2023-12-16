@@ -4,25 +4,35 @@ import {
   ERROR_MAX_FILE_SIZE,
   ERROR_NOT_CHOOSE_FILE
 } from '../../common/constants/errors'
-import { MaxFileSize } from '../../common/models/file-size'
-import { EXTS } from '../../common/models/supported-ext'
+import { SUPPORTED_MAX_FILE_SIZE } from '../../common/models/file-size'
+import { SUPPORTED_EXTENSIONS } from '../../common/models/supported-ext'
+import { getFileCommonProps } from '../../common/utils/get-file-common-props.util'
 
 /**
  * @function useFileChooser
  * a function which optionally accept the two params
- * @param exts EXTS[] | undefined
+ * @param exts SUPPORTED_EXTENSIONS[] | undefined
  * @param maxSize number | undefined
  *
  * @default exts ['.jpg', '.jpeg', '.png']
  * @default maxSize 1000000
  */
-export const useFileChooser = (exts?: EXTS[], maxSize?: number) => {
+export const useFileChooser = (
+  exts?: SUPPORTED_EXTENSIONS[],
+  maxSize?: number
+) => {
   const [file, setFile] = useState<File | null>(null)
   const [imageDataUrl, setImageDataUrl] = useState('')
   const [isDragging, setIsDragging] = useState(false)
   const [error, setError] = useState('')
-  const _extensions: EXTS[] = exts ? exts : [EXTS.JPG, EXTS.JPEG, EXTS.PNG]
-  const _maxSize = maxSize ? maxSize : MaxFileSize['1MB']
+  const _extensions: SUPPORTED_EXTENSIONS[] = exts
+    ? exts
+    : [
+        SUPPORTED_EXTENSIONS.JPG,
+        SUPPORTED_EXTENSIONS.JPEG,
+        SUPPORTED_EXTENSIONS.PNG
+      ]
+  const _maxSize = maxSize ? maxSize : SUPPORTED_MAX_FILE_SIZE['1MB']
 
   function _setFile(file: File) {
     const { ext, size } = _getFileExtAndSize(file)
@@ -64,10 +74,7 @@ export const useFileChooser = (exts?: EXTS[], maxSize?: number) => {
   }
 
   function _getFileExtAndSize(file: File) {
-    const extReg =
-      /(\.jpg)|(\.png)|(\.JPEG)|(\.jpeg)|(\.JPG)|(\.png)|(\.PNG)|(\.heic)|(\.HEIC)|(\.heif)|(\.HEIF)/
-    const ext = extReg.exec(file.name)?.[0]! as EXTS
-    const size = file.size
+    const { ext, size } = getFileCommonProps(file)
     return { ext, size }
   }
 
