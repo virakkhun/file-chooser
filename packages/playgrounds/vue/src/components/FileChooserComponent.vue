@@ -50,7 +50,7 @@ defineExpose({
         <div class="w-32 h-32 rounded-full overflow-hidden"></div>
         <img
           :src="fileChooserBuilder.imageDataUrl.value"
-          class="w-32 h-32 rounded-full object-cover object-center"
+          class="aspect-square w-32 h-32 rounded-full object-cover object-center"
         />
       </template>
 
