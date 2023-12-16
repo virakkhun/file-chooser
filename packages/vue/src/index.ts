@@ -5,15 +5,16 @@ import {
   ERROR_NOT_CHOOSE_FILE
 } from '../../common/constants/errors'
 import { IFileChooser } from '../../common/models/file-chooser'
-import { MaxFileSize } from '../../common/models/file-size'
-import { EXTS } from '../../common/models/supported-ext'
+import { SUPPORTED_MAX_FILE_SIZE } from '../../common/models/file-size'
+import { SUPPORTED_EXTENSIONS } from '../../common/models/supported-ext'
+import { getFileCommonProps } from '../../common/utils/get-file-common-props.util'
 
 /**
  * @class FileChooser
- * @constructor exts:? EXTS[] | undefined , maxSize?: number
+ * @constructor exts:? SUPPORTED_EXTENSIONS[] | undefined , maxSize?: SUPPORTED_MAX_FILE_SIZE | undefined
  * a class which constructor optionally accept the two params
- * @param exts EXTS[] | undefined
- * @param maxSize number | undefined
+ * @param exts SUPPORTED_EXTENSIONS[] | undefined
+ * @param maxSize SUPPORTED_MAX_FILE_SIZE | undefined
  *
  * @default exts ['.jpg', '.jpeg', '.png']
  * @default maxSize 1000000
@@ -23,10 +24,17 @@ export class FileChooser implements IFileChooser {
   private _error: Ref<string> = ref('')
   private _imageDataUrl: Ref<string> = ref('')
   private _isDragging: Ref<boolean> = ref(false)
-  private _extensions: EXTS[] = [EXTS.JPG, EXTS.JPEG, EXTS.PNG]
-  private _maxSize = MaxFileSize['1MB']
+  private _extensions: SUPPORTED_EXTENSIONS[] = [
+    SUPPORTED_EXTENSIONS.JPG,
+    SUPPORTED_EXTENSIONS.JPEG,
+    SUPPORTED_EXTENSIONS.PNG
+  ]
+  private _maxSize = SUPPORTED_MAX_FILE_SIZE['1MB']
 
-  constructor(exts?: EXTS[], maxSize?: number) {
+  constructor(
+    exts?: SUPPORTED_EXTENSIONS[],
+    maxSize?: SUPPORTED_MAX_FILE_SIZE
+  ) {
     if (exts) this._extensions = exts
     if (maxSize) this._maxSize = maxSize
   }
@@ -81,6 +89,7 @@ export class FileChooser implements IFileChooser {
     this._isDragging.value = false
     this._imageDataUrl.value = ''
     this._file.value = null
+    this._error.value = ''
   }
 
   private _setFile(file: File) {
@@ -107,10 +116,7 @@ export class FileChooser implements IFileChooser {
   }
 
   private _getFileExtAndSize(file: File) {
-    const extReg =
-      /(\.jpg)|(\.png)|(\.JPEG)|(\.jpeg)|(\.JPG)|(\.png)|(\.PNG)|(\.heic)|(\.HEIC)|(\.heif)|(\.HEIF)/
-    const ext = extReg.exec(file.name)?.[0]! as EXTS
-    const size = file.size
+    const { ext, size } = getFileCommonProps(file)
     return { ext, size }
   }
 

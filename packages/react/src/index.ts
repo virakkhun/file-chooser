@@ -1,30 +1,40 @@
-import { useState } from 'react'
+import { ChangeEvent, MouseEvent, useState } from 'react'
 import {
   ERROR_EXT_NOT_SUPPORTED,
   ERROR_MAX_FILE_SIZE,
   ERROR_NOT_CHOOSE_FILE
 } from '../../common/constants/errors'
-import { MaxFileSize } from '../../common/models/file-size'
-import { EXTS } from '../../common/models/supported-ext'
+import { SUPPORTED_MAX_FILE_SIZE } from '../../common/models/file-size'
+import { SUPPORTED_EXTENSIONS } from '../../common/models/supported-ext'
+import { getFileCommonProps } from '../../common/utils/get-file-common-props.util'
 
 /**
  * @function useFileChooser
  * a function which optionally accept the two params
- * @param exts EXTS[] | undefined
+ * @param exts SUPPORTED_EXTENSIONS[] | undefined
  * @param maxSize number | undefined
  *
  * @default exts ['.jpg', '.jpeg', '.png']
  * @default maxSize 1000000
  */
-export const useFileChooser = (exts?: EXTS[], maxSize?: number) => {
+export const useFileChooser = (
+  exts?: SUPPORTED_EXTENSIONS[],
+  maxSize?: number
+) => {
   const [file, setFile] = useState<File | null>(null)
   const [imageDataUrl, setImageDataUrl] = useState('')
   const [isDragging, setIsDragging] = useState(false)
   const [error, setError] = useState('')
-  const _extensions: EXTS[] = exts ? exts : [EXTS.JPG, EXTS.JPEG, EXTS.PNG]
-  const _maxSize = maxSize ? maxSize : MaxFileSize['1MB']
+  const _extensions: SUPPORTED_EXTENSIONS[] = exts
+    ? exts
+    : [
+        SUPPORTED_EXTENSIONS.JPG,
+        SUPPORTED_EXTENSIONS.JPEG,
+        SUPPORTED_EXTENSIONS.PNG
+      ]
+  const _maxSize = maxSize ? maxSize : SUPPORTED_MAX_FILE_SIZE['1MB']
 
-  function _setFile(file: File) {
+  async function _setFile(file: File) {
     const { ext, size } = _getFileExtAndSize(file)
 
     if (!ext || !_extensions.includes(ext)) {
@@ -39,22 +49,24 @@ export const useFileChooser = (exts?: EXTS[], maxSize?: number) => {
       return
     }
 
-    setFile(() => file)
-    _fileToDataUrl()
+    return Promise.resolve(file)
   }
 
-  function _readFileFromEvent(e: Event | DragEvent, isDragEvent: boolean) {
+  function _readFileFromEvent(
+    e: ChangeEvent<HTMLInputElement> | React.DragEvent,
+    isDragEvent: boolean
+  ) {
     const files = isDragEvent
-      ? (<DragEvent>e).dataTransfer?.files
+      ? (<React.DragEvent>e).dataTransfer?.files
       : (<HTMLInputElement>e.target)?.files
 
     return files?.item(0)
   }
 
-  function _fileToDataUrl() {
+  function _fileToDataUrl(file: File) {
     _revokeObjectUrl()
 
-    const blob = URL.createObjectURL(file!)
+    const blob = URL.createObjectURL(file)
     const fileReader = new FileReader()
 
     fileReader.addEventListener('load', () => {
@@ -64,10 +76,7 @@ export const useFileChooser = (exts?: EXTS[], maxSize?: number) => {
   }
 
   function _getFileExtAndSize(file: File) {
-    const extReg =
-      /(\.jpg)|(\.png)|(\.JPEG)|(\.jpeg)|(\.JPG)|(\.png)|(\.PNG)|(\.heic)|(\.HEIC)|(\.heif)|(\.HEIF)/
-    const ext = extReg.exec(file.name)?.[0]! as EXTS
-    const size = file.size
+    const { ext, size } = getFileCommonProps(file)
     return { ext, size }
   }
 
@@ -85,14 +94,20 @@ export const useFileChooser = (exts?: EXTS[], maxSize?: number) => {
    * @param isDragEvent boolean
    * @returns void
    */
-  function onChange(e: Event | DragEvent, isDragEvent: boolean) {
+  function onChange(
+    e: ChangeEvent<HTMLInputElement> | React.DragEvent,
+    isDragEvent: boolean
+  ) {
     e.preventDefault()
+    setError(() => '')
     const file = _readFileFromEvent(e, isDragEvent)
     if (!file) {
       setError(() => ERROR_NOT_CHOOSE_FILE)
       return
     }
-    _setFile(file)
+    _setFile(file).then((f) => {
+      if (f) _fileToDataUrl(f)
+    })
   }
 
   /**
@@ -100,13 +115,31 @@ export const useFileChooser = (exts?: EXTS[], maxSize?: number) => {
    * @param e DragEvent
    * @param dragging boolean
    */
-  function onDrag(e: DragEvent, dragging: boolean) {
+  function onDrag(e: React.DragEvent, dragging: boolean) {
     e.preventDefault()
     setIsDragging(() => dragging)
   }
 
-  return [
-    { isDragging, error, file, imageDataUrl },
-    { onChange, onDrag }
-  ]
+  /**
+   * a function to reset state
+   */
+  function destroy(e: MouseEvent) {
+    e.preventDefault()
+    e.stopPropagation()
+    _revokeObjectUrl()
+    setFile(() => null)
+    setIsDragging((isDragging) => !isDragging)
+    setError(() => '')
+    setImageDataUrl(() => '')
+  }
+
+  return {
+    isDragging,
+    error,
+    file,
+    imageDataUrl,
+    onChange,
+    onDrag,
+    destroy
+  }
 }
