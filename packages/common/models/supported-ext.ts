@@ -1,4 +1,4 @@
-export enum EXTS {
+export enum SUPPORTED_EXTENSIONS {
   JPG = '.jpg',
   JPEG = '.jpeg',
   PNG = '.png',

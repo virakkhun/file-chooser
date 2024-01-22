@@ -1597,11 +1597,6 @@ vite@5.0.6:
   optionalDependencies:
     fsevents "~2.3.3"
 
-vue-file-chooser@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/vue-file-chooser/-/vue-file-chooser-0.0.1.tgz#f15263754b48077ef0bf9a5730fcd0ad6f34b485"
-  integrity sha512-KpYNd3Dq9xv0wPDUmb6gx4JTrzOsBlZwZU7PRT1lbYjAMknkUAgHBSKGryXWCWQoEgSG/KELOfpEH2m7fcKPmw==
-
 vue@^3.3.10:
   version "3.3.10"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.3.10.tgz#6e19c1982ee655a14babe1610288b90005f02ab1"
