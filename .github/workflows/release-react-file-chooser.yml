@@ -4,9 +4,6 @@ on:
   pull_request:
     branches:
       - 'release-react-file-chooser'
-  push:
-    branches:
-      - 'release-react-file-chooser'
 
 jobs:
   release:
